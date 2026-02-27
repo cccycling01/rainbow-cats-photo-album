@@ -1,0 +1,92 @@
+<!--miniprogram/pages/MessageBoard/index.wxml-->
+<view class="message-container">
+  <!-- 标题 -->
+  <view class="header">
+    <text class="title">💬 我们的留言板</text>
+    <text class="subtitle">记录我们的点点滴滴</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view 
+    class="message-list" 
+    scroll-y 
+    scroll-top="0"
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{messages.length === 0 && !loading}}">
+      <text class="empty-icon">💌</text>
+      <text class="empty-text">还没有留言</text>
+      <text class="empty-hint">发送第一条消息吧~</text>
+    </view>
+
+    <!-- 消息 -->
+    <view 
+      class="message-item {{item.senderId === currentUserId ? 'mine' : 'theirs'}}"
+      wx:for="{{messages}}"
+      wx:key="_id"
+    >
+      <!-- 悄悄话提示 -->
+      <view class="whisper-hint" wx:if="{{item.type === 'whisper' && item._openid !== currentUserOpenid && !item.isRead}}">
+        <text>💭 点击查看悄悄话</text>
+      </view>
+
+      <!-- 消息气泡 -->
+      <view 
+        class="message-bubble {{item.type === 'whisper' ? 'whisper' : ''}}"
+        bindtap="onWhisperTap"
+        data-index="{{index}}"
+      >
+        <view class="bubble-content">
+          <text class="message-text">{{item.content}}</text>
+        </view>
+        <view class="bubble-meta">
+          <text class="sender-name">{{item.sender}}</text>
+          <text class="message-time">{{item.timeStr}}</text>
+          <text class="whisper-icon" wx:if="{{item.type === 'whisper'}}">💭</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading" wx:if="{{loading}}">
+      <view class="loading-spinner"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area" style="bottom: {{inputBottom}}px">
+    <!-- 悄悄话开关 -->
+    <view 
+      class="whisper-toggle {{isWhisper ? 'active' : ''}}"
+      bindtap="toggleWhisper"
+    >
+      <text>{{isWhisper ? '💭' : '💬'}}</text>
+    </view>
+
+    <!-- 输入框 -->
+    <view class="input-wrapper">
+      <input 
+        class="message-input"
+        type="text"
+        placeholder="{{isWhisper ? '发送悄悄话...' : '说点什么...'}}"
+        value="{{newMessage}}"
+        bindinput="onMessageInput"
+        bindfocus="onInputFocus"
+        bindblur="onInputBlur"
+        maxlength="500"
+        confirm-type="send"
+        bindconfirm="sendMessage"
+      />
+    </view>
+
+    <!-- 发送按钮 -->
+    <view 
+      class="send-btn {{newMessage.trim() ? 'active' : ''}}"
+      bindtap="sendMessage"
+    >
+      <text>发送</text>
+    </view>
+  </view>
+</view>

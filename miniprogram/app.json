@@ -4,6 +4,7 @@
     "pages/Album/index",
     "pages/AlbumDetail/index",
     "pages/AlbumUpload/index",
+    "pages/MessageBoard/index",
     "pages/Mission/index",
     "pages/MissionAdd/index",
     "pages/MissionDetail/index",

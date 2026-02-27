@@ -61,4 +61,10 @@ Page({
             url: '/pages/Album/index'
         })
     },
+
+    goToMessageBoard() {
+        wx.navigateTo({
+            url: '/pages/MessageBoard/index'
+        })
+    },
 })
