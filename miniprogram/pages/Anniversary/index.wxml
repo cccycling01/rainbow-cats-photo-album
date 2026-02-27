@@ -1,0 +1,62 @@
+<!--miniprogram/pages/Anniversary/index.wxml-->
+<view class="anniversary-container">
+  <!-- 顶部倒计时 -->
+  <view class="countdown-section">
+    <view class="countdown-card {{nextAnniversary.isToday ? 'today' : ''}}">
+      <view class="countdown-label">距离下一个纪念日</view>
+      <view class="countdown-days">
+        <text class="days-number">{{daysRemaining}}</text>
+        <text class="days-unit">天</text>
+      </view>
+      <view class="countdown-name" wx:if="{{nextAnniversary}}">
+        {{getTypeIcon(nextAnniversary.type)}} {{nextAnniversary.name}}
+      </view>
+      <view class="countdown-date" wx:if="{{nextAnniversary}}">
+        {{nextAnniversary.nextDate}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 纪念日列表 -->
+  <view class="list-section">
+    <view class="section-title">📅 纪念日列表</view>
+    
+    <view class="anniversary-list">
+      <view 
+        class="anniversary-item {{item.isToday ? 'today' : ''}}"
+        wx:for="{{anniversaries}}"
+        wx:key="_id"
+      >
+        <view class="item-icon">{{getTypeIcon(item.type)}}</view>
+        <view class="item-info">
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-date">{{item.date}}</view>
+        </view>
+        <view class="item-countdown">
+          <text class="countdown-value">{{item.daysRemaining}}</text>
+          <text class="countdown-unit">天</text>
+        </view>
+        <view class="item-delete" bindtap="deleteAnniversary" data-id="{{item._id}}">
+          <text>×</text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{anniversaries.length === 0 && !loading}}">
+        <text class="empty-icon">📅</text>
+        <text class="empty-text">还没有纪念日</text>
+        <text class="empty-hint">点击右下角添加第一个纪念日</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+  </view>
+
+  <!-- 悬浮按钮 -->
+  <view class="fab" bindtap="goToAdd">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

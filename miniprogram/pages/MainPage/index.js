@@ -67,4 +67,10 @@ Page({
             url: '/pages/MessageBoard/index'
         })
     },
+
+    goToAnniversary() {
+        wx.navigateTo({
+            url: '/pages/Anniversary/index'
+        })
+    },
 })

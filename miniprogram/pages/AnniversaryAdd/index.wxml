@@ -1,0 +1,68 @@
+<!--miniprogram/pages/AnniversaryAdd/index.wxml-->
+<view class="add-container">
+  <!-- 表单 -->
+  <view class="form-section">
+    <!-- 名称 -->
+    <view class="form-item">
+      <view class="form-label">名称</view>
+      <input 
+        class="form-input"
+        placeholder="输入纪念日名称"
+        value="{{name}}"
+        bindinput="onNameInput"
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 日期 -->
+    <view class="form-item">
+      <view class="form-label">日期</view>
+      <picker 
+        mode="date" 
+        value="{{date}}" 
+        bindchange="onDateChange"
+      >
+        <view class="form-picker {{date ? '' : 'placeholder'}}">
+          {{date || '选择日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 类型 -->
+    <view class="form-item">
+      <view class="form-label">类型</view>
+      <picker 
+        mode="selector" 
+        range="{{types}}" 
+        range-key="name"
+        value="{{type === 'love' ? 0 : type === 'birthday' ? 1 : 2}}"
+        bindchange="onTypeChange"
+      >
+        <view class="form-picker">
+          {{types[type === 'love' ? 0 : type === 'birthday' ? 1 : 2].name}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 农历开关 -->
+    <view class="form-item">
+      <view class="form-label">农历</view>
+      <switch 
+        checked="{{isLunar}}" 
+        bindchange="onLunarChange"
+        color="#007AFF"
+      />
+    </view>
+  </view>
+
+  <!-- 提示 -->
+  <view class="tips">
+    <text>• 纪念日每年会自动重复</text>
+    <text>• 农历日期需要选择对应公历日期</text>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="save">保存纪念日</button>
+  </view>
+</view>

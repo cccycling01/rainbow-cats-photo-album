@@ -5,6 +5,8 @@
     "pages/AlbumDetail/index",
     "pages/AlbumUpload/index",
     "pages/MessageBoard/index",
+    "pages/Anniversary/index",
+    "pages/AnniversaryAdd/index",
     "pages/Mission/index",
     "pages/MissionAdd/index",
     "pages/MissionDetail/index",
