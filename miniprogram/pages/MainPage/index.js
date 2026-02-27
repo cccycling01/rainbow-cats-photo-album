@@ -55,4 +55,10 @@ Page({
             this.setData({creditB: res.result.data[0].credit})
         })
     },
+
+    goToAlbum() {
+        wx.navigateTo({
+            url: '/pages/Album/index'
+        })
+    },
 })

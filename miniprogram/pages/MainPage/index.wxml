@@ -33,6 +33,18 @@
       </view>
     </view>
   </view>
+
+  <!-- 相册入口 -->
+  <view class="form-group_label">🖼️ 我们的回忆</view>
+  <view class="form-group" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.05);">
+    <view class="form-cell" bindtap="goToAlbum">
+      <view class="slide">
+        <view class="title">📸 相册</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
+  </view>
+  
   <view bindtap="requestSubscribeMessage">接收服务通知</view>
   
 </view>

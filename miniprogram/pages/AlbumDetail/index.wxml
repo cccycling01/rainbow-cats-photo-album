@@ -1,0 +1,72 @@
+<!--miniprogram/pages/AlbumDetail/index.wxml-->
+<view class="detail-container">
+  <!-- 照片区域 -->
+  <view class="image-section">
+    <image 
+      class="detail-image" 
+      src="{{album.imageUrl}}" 
+      mode="aspectFit"
+      bindtap="previewImage"
+    ></image>
+  </view>
+
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <view class="action-item" bindtap="toggleLike">
+      <text class="action-icon {{liked ? 'liked' : ''}}">{{liked ? '❤️' : '🤍'}}</text>
+      <text class="action-text">{{album.likeCount || 0}}</text>
+    </view>
+    <view class="action-item" bindtap="showCommentBox">
+      <text class="action-icon">💬</text>
+      <text class="action-text">{{album.commentCount || 0}}</text>
+    </view>
+    <view class="action-item" bindtap="setAsCover">
+      <text class="action-icon">🖼️</text>
+      <text class="action-text">封面</text>
+    </view>
+    <view class="action-item" wx:if="{{isUploader}}" bindtap="deletePhoto">
+      <text class="action-icon delete">🗑️</text>
+      <text class="action-text delete">删除</text>
+    </view>
+  </view>
+
+  <!-- 照片信息 -->
+  <view class="info-section">
+    <view class="uploader-info">
+      <text class="uploader-name">{{album.uploader}}</text>
+      <text class="upload-time">{{album.createTime}}</text>
+    </view>
+    <view class="content" wx:if="{{album.content}}">
+      {{album.content}}
+    </view>
+  </view>
+
+  <!-- 评论区域 -->
+  <view class="comment-section">
+    <view class="section-title">评论</view>
+    <view class="comment-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="_id">
+        <view class="comment-header">
+          <text class="commenter-name">{{item.commenter}}</text>
+          <text class="comment-time">{{item.createTime}}</text>
+        </view>
+        <view class="comment-content">{{item.content}}</view>
+      </view>
+    </view>
+    <view class="no-comment" wx:else>
+      <text>还没有评论，快来抢沙发吧~</text>
+    </view>
+  </view>
+
+  <!-- 评论输入框 -->
+  <view class="comment-input-box {{showCommentInput ? 'show' : ''}}">
+    <input 
+      class="comment-input" 
+      placeholder="说点什么..." 
+      value="{{commentText}}"
+      bindinput="onCommentInput"
+      focus="{{showCommentInput}}"
+    />
+    <view class="send-btn" bindtap="submitComment">发送</view>
+  </view>
+</view>

@@ -1,6 +1,9 @@
 {
   "pages": [
     "pages/MainPage/index",
+    "pages/Album/index",
+    "pages/AlbumDetail/index",
+    "pages/AlbumUpload/index",
     "pages/Mission/index",
     "pages/MissionAdd/index",
     "pages/MissionDetail/index",
