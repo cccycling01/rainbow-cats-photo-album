@@ -1,0 +1,21 @@
+/* miniprogram/pages/CheckIn/index.wxss */
+.checkin-container { min-height: 100vh; background: #F5F5F7; padding: 32rpx; }
+.streak-card { background: linear-gradient(135deg, #34C759, #30D158); border-radius: 32rpx; padding: 48rpx; text-align: center; color: #fff; display: flex; flex-direction: column; align-items: center; margin-bottom: 32rpx; }
+.streak-icon { font-size: 60rpx; }
+.streak-value { font-size: 64rpx; font-weight: 700; }
+.streak-label { font-size: 26rpx; opacity: 0.9; }
+
+.today-status { text-align: center; font-size: 32rpx; color: #1D1D1F; margin-bottom: 32rpx; font-weight: 600; }
+
+.presets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20rpx; margin-bottom: 40rpx; }
+.preset { background: #fff; border-radius: 20rpx; padding: 32rpx; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.preset.disabled { opacity: 0.5; }
+.preset-icon { font-size: 48rpx; margin-bottom: 8rpx; }
+.preset-name { font-size: 26rpx; color: #1D1D1F; }
+.preset-exp { font-size: 22rpx; color: #34C759; margin-top: 4rpx; }
+
+.section-title { font-size: 30rpx; font-weight: 600; color: #1D1D1F; margin-bottom: 20rpx; }
+.history { background: #fff; border-radius: 20rpx; padding: 24rpx; }
+.history-item { display: flex; justify-content: space-between; padding: 20rpx; border-bottom: 1rpx solid #F5F5F7; font-size: 28rpx; }
+.history-item:last-child { border-bottom: none; }
+.date { color: #86868B; font-size: 24rpx; }

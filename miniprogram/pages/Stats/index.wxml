@@ -1,0 +1,31 @@
+<!--miniprogram/pages/Stats/index.wxml-->
+<view class="stats-container">
+  <view class="streak-card">
+    <view class="streak-icon">🔥</view>
+    <view class="streak-value">{{streak}}</view>
+    <view class="streak-label">天连续互动</view>
+  </view>
+  
+  <view class="week-stats">
+    <view class="stat-item">
+      <text class="stat-value">{{weekStats.tasks}}</text>
+      <text class="stat-label">完成任务</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{weekStats.messages}}</text>
+      <text class="stat-label">发送消息</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{weekStats.photos}}</text>
+      <text class="stat-label">上传照片</text>
+    </view>
+  </view>
+  
+  <view class="section-title">📊 本周互动趋势</view>
+  <view class="chart">
+    <view class="bar" wx:for="{{chartData}}" wx:key="index" style="height: {{item.value*10}}rpx">
+      <text class="bar-value">{{item.value}}</text>
+      <text class="bar-label">{{item.day}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,27 @@
+/* miniprogram/pages/Todo/index.wxss */
+.todo-container { min-height: 100vh; background: #F5F5F7; padding: 32rpx; }
+
+.progress-section { margin-bottom: 32rpx; }
+.progress-card { background: linear-gradient(135deg, #007AFF, #5856D6); border-radius: 24rpx; padding: 32rpx; }
+.progress-info { display: flex; justify-content: space-between; margin-bottom: 16rpx; }
+.progress-label { color: rgba(255,255,255,0.8); font-size: 26rpx; }
+.progress-value { color: #fff; font-size: 40rpx; font-weight: 700; }
+.progress-bar { height: 16rpx; background: rgba(255,255,255,0.3); border-radius: 8rpx; overflow: hidden; }
+.progress-fill { height: 100%; background: #fff; border-radius: 8rpx; transition: width 0.3s ease; }
+.progress-stats { color: rgba(255,255,255,0.8); font-size: 24rpx; margin-top: 12rpx; text-align: center; }
+
+.input-section { display: flex; gap: 16rpx; margin-bottom: 32rpx; }
+.todo-input { flex: 1; height: 88rpx; background: #fff; border-radius: 44rpx; padding: 0 32rpx; font-size: 28rpx; }
+.add-btn { width: 88rpx; height: 88rpx; background: linear-gradient(135deg, #007AFF, #5856D6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48rpx; color: #fff; }
+
+.todo-list { display: flex; flex-direction: column; gap: 16rpx; }
+.todo-item { display: flex; align-items: center; background: #fff; border-radius: 20rpx; padding: 24rpx; gap: 20rpx; }
+.todo-item.completed .todo-text { text-decoration: line-through; color: #A1A1A6; }
+.checkbox { width: 48rpx; height: 48rpx; border: 3rpx solid #E5E5E5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28rpx; color: #34C759; }
+.todo-item.completed .checkbox { background: #34C759; border-color: #34C759; color: #fff; }
+.todo-content { flex: 1; }
+.todo-text { font-size: 28rpx; color: #1D1D1F; display: block; }
+.todo-meta { font-size: 22rpx; color: #34C759; margin-top: 4rpx; display: block; }
+.delete-btn { width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center; opacity: 0.3; font-size: 36rpx; }
+
+.empty { text-align: center; padding: 80rpx; color: #86868B; font-size: 28rpx; }

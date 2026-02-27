@@ -1,0 +1,50 @@
+<!--miniprogram/pages/Game/index.wxml-->
+<view class="game-container">
+  <!-- 游戏选择 -->
+  <view class="game-tabs">
+    <view class="tab {{currentGame==='rps'?'active':''}}" bindtap="switchGame" data-game="rps">✂️ 剪刀石头布</view>
+    <view class="tab {{currentGame==='quiz'?'active':''}}" bindtap="switchGame" data-game="quiz">💕 每日问答</view>
+  </view>
+
+  <!-- 剪刀石头布 -->
+  <view class="game-content" wx:if="{{currentGame==='rps'}}">
+    <view class="battle-area">
+      <view class="player">
+        <text class="emoji">{{myChoice||'❓'}}</text>
+        <text class="label">你</text>
+      </view>
+      <view class="vs">VS</view>
+      <view class="player">
+        <text class="emoji">{{computerChoice||'❓'}}</text>
+        <text class="label">TA</text>
+      </view>
+    </view>
+    
+    <view class="result" wx:if="{{result}}">{{result}}</view>
+
+    <view class="choices" wx:if="{{!myChoice}}">
+      <view class="choice-btn" bindtap="playRPS" data-choice="✊">✊</view>
+      <view class="choice-btn" bindtap="playRPS" data-choice="✌️">✌️</view>
+      <view class="choice-btn" bindtap="playRPS" data-choice="✋">✋</view>
+    </view>
+    <view class="reset-btn" wx:else bindtap="reset">再来一局</view>
+
+    <view class="stats">
+      <view class="stat-item win">胜 {{wins}}</view>
+      <view class="stat-item draw">平 {{draws}}</view>
+      <view class="stat-item lose">负 {{losses}}</view>
+    </view>
+  </view>
+
+  <!-- 每日问答 -->
+  <view class="game-content" wx:if="{{currentGame==='quiz'}}">
+    <view class="quiz-card">
+      <view class="quiz-title">💕 每日问答</view>
+      <view class="quiz-question">{{dailyQuestion.q}}</view>
+      <view class="quiz-options" wx:if="{{!answered}}">
+        <view class="option" wx:for="{{dailyQuestion.a}}" wx:key="index" bindtap="answerQuestion" data-answer="{{item}}">{{item}}</view>
+      </view>
+      <view class="quiz-result" wx:else>{{answerResult}}</view>
+    </view>
+  </view>
+</view>

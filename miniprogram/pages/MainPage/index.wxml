@@ -55,6 +55,36 @@
         <view class="arrow">></view>
       </view>
     </view>
+    <view class="form-cell" bindtap="goToTodo">
+      <view class="slide">
+        <view class="title">📝 待办</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
+    <view class="form-cell" bindtap="goToGame">
+      <view class="slide">
+        <view class="title">🎮 游戏</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
+    <view class="form-cell" bindtap="goToCheckIn">
+      <view class="slide">
+        <view class="title">🎯 打卡</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
+    <view class="form-cell" bindtap="goToIntimacy">
+      <view class="slide">
+        <view class="title">💕 亲密</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
+    <view class="form-cell" bindtap="goToStats">
+      <view class="slide">
+        <view class="title">📊 统计</view>
+        <view class="arrow">></view>
+      </view>
+    </view>
   </view>
   
   <view bindtap="requestSubscribeMessage">接收服务通知</view>

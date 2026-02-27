@@ -1,0 +1,25 @@
+<!--miniprogram/pages/Intimacy/index.wxml-->
+<view class="intimacy-container">
+  <view class="level-card">
+    <view class="level-badge">Lv.{{level}}</view>
+    <view class="title">{{title}}</view>
+    <view class="exp-bar"><view class="exp-fill" style="width: {{exp/maxExp*100}}%"></view></view>
+    <view class="exp-text">{{exp}}/{{maxExp}} 经验值</view>
+  </view>
+  
+  <view class="section-title">🏆 成就徽章</view>
+  <view class="badges">
+    <view class="badge" wx:for="{{badges}}" wx:key="index">{{item}}</view>
+    <view class="badge empty" wx:if="{{badges.length===0}}">暂无徽章</view>
+  </view>
+  
+  <view class="section-title">📈 互动记录</view>
+  <view class="activities">
+    <view class="activity" wx:for="{{activities}}" wx:key="index">
+      <text class="act-icon">{{item.icon}}</text>
+      <text class="act-text">{{item.text}}</text>
+      <text class="act-exp">+{{item.exp}}经验</text>
+    </view>
+    <view class="empty" wx:if="{{activities.length===0}}">暂无记录</view>
+  </view>
+</view>

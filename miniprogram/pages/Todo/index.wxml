@@ -1,0 +1,40 @@
+<!--miniprogram/pages/Todo/index.wxml-->
+<view class="todo-container">
+  <!-- 进度条 -->
+  <view class="progress-section">
+    <view class="progress-card">
+      <view class="progress-info">
+        <text class="progress-label">完成进度</text>
+        <text class="progress-value">{{progress}}%</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{progress}}%"></view>
+      </view>
+      <view class="progress-stats">{{completedCount}}/{{totalCount}} 已完成</view>
+    </view>
+  </view>
+
+  <!-- 输入框 -->
+  <view class="input-section">
+    <input class="todo-input" placeholder="添加待办..." value="{{newTodo}}" bindinput="onInput" bindconfirm="addTodo" />
+    <view class="add-btn" bindtap="addTodo">+</view>
+  </view>
+
+  <!-- 待办列表 -->
+  <view class="todo-list">
+    <view class="todo-item {{item.completed ? 'completed' : ''}}" wx:for="{{todos}}" wx:key="_id">
+      <view class="checkbox" bindtap="toggleTodo" data-id="{{item._id}}" data-completed="{{item.completed}}">
+        <text>{{item.completed ? '✓' : ''}}</text>
+      </view>
+      <view class="todo-content">
+        <text class="todo-text">{{item.content}}</text>
+        <text class="todo-meta" wx:if="{{item.completed}}">✓ {{item.completedBy}}</text>
+      </view>
+      <view class="delete-btn" bindtap="deleteTodo" data-id="{{item._id}}">×</view>
+    </view>
+    
+    <view class="empty" wx:if="{{todos.length === 0 && !loading}}">
+      <text>还没有待办~</text>
+    </view>
+  </view>
+</view>

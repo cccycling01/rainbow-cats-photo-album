@@ -1,0 +1,36 @@
+/* miniprogram/pages/Game/index.wxss */
+.game-container { min-height: 100vh; background: #F5F5F7; }
+
+.game-tabs { display: flex; background: #fff; padding: 16rpx; gap: 16rpx; }
+.tab { flex: 1; text-align: center; padding: 20rpx; border-radius: 16rpx; font-size: 28rpx; color: #86868B; }
+.tab.active { background: linear-gradient(135deg, #007AFF, #5856D6); color: #fff; }
+
+.game-content { padding: 32rpx; }
+
+.battle-area { display: flex; align-items: center; justify-content: center; gap: 60rpx; margin-bottom: 40rpx; }
+.player { text-align: center; }
+.emoji { font-size: 120rpx; display: block; }
+.label { font-size: 28rpx; color: #86868B; }
+.vs { font-size: 40rpx; font-weight: 700; color: #007AFF; }
+
+.result { text-align: center; font-size: 48rpx; font-weight: 700; color: #007AFF; margin-bottom: 32rpx; }
+
+.choices { display: flex; justify-content: center; gap: 32rpx; }
+.choice-btn { width: 140rpx; height: 140rpx; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 80rpx; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.1); }
+.choice-btn:active { transform: scale(0.95); }
+
+.reset-btn { text-align: center; margin-top: 32rpx; padding: 20rpx; color: #007AFF; font-size: 28rpx; }
+
+.stats { display: flex; justify-content: center; gap: 40rpx; margin-top: 60rpx; }
+.stat-item { padding: 16rpx 32rpx; border-radius: 24rpx; font-size: 28rpx; font-weight: 600; }
+.stat-item.win { background: rgba(52,199,89,0.15); color: #34C759; }
+.stat-item.draw { background: rgba(142,142,147,0.15); color: #8E8E93; }
+.stat-item.lose { background: rgba(255,59,48,0.15); color: #FF3B30; }
+
+.quiz-card { background: #fff; border-radius: 24rpx; padding: 48rpx; text-align: center; }
+.quiz-title { font-size: 32rpx; font-weight: 700; color: #FF2D55; margin-bottom: 32rpx; }
+.quiz-question { font-size: 36rpx; color: #1D1D1F; margin-bottom: 40rpx; }
+.quiz-options { display: flex; flex-direction: column; gap: 20rpx; }
+.option { padding: 24rpx; background: #F5F5F7; border-radius: 16rpx; font-size: 28rpx; }
+.option:active { background: #E5E5E5; }
+.quiz-result { font-size: 36rpx; color: #FF2D55; font-weight: 600; }

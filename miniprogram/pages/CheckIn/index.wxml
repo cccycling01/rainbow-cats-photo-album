@@ -1,0 +1,26 @@
+<!--miniprogram/pages/CheckIn/index.wxml-->
+<view class="checkin-container">
+  <view class="streak-card">
+    <text class="streak-icon">🔥</text>
+    <text class="streak-value">{{streak}}</text>
+    <text class="streak-label">天连续打卡</text>
+  </view>
+  
+  <view class="today-status">{{todayChecked?'✅ 今日已打卡':'📝 今日打卡'}}</view>
+  
+  <view class="presets">
+    <view class="preset {{todayChecked?'disabled':''}}" wx:for="{{presets}}" wx:key="id" bindtap="doCheckIn" data-id="{{item.id}}" wx:if="{{!todayChecked}}">
+      <text class="preset-icon">{{item.icon}}</text>
+      <text class="preset-name">{{item.name}}</text>
+      <text class="preset-exp">+{{item.exp}}</text>
+    </view>
+  </view>
+  
+  <view class="history">
+    <view class="section-title">📅 打卡记录</view>
+    <view class="history-item" wx:for="{{checkIns}}" wx:key="_id">
+      <text>{{item.preset.icon}} {{item.preset.name}}</text>
+      <text class="date">{{item.date}}</text>
+    </view>
+  </view>
+</view>

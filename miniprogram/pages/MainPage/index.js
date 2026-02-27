@@ -73,4 +73,10 @@ Page({
             url: '/pages/Anniversary/index'
         })
     },
+
+    goToTodo() { wx.navigateTo({ url: '/pages/Todo/index' }) },
+    goToGame() { wx.navigateTo({ url: '/pages/Game/index' }) },
+    goToIntimacy() { wx.navigateTo({ url: '/pages/Intimacy/index' }) },
+    goToStats() { wx.navigateTo({ url: '/pages/Stats/index' }) },
+    goToCheckIn() { wx.navigateTo({ url: '/pages/CheckIn/index' }) },
 })
