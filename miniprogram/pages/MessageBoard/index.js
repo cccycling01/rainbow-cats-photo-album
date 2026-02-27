@@ -59,6 +59,22 @@ Page({
   async loadMessages() {
     this.setData({ loading: true })
 
+    // 网络状态检测
+    try {
+      const networkType = await new Promise(resolve => {
+        wx.getNetworkType({
+          success: res => resolve(res.networkType),
+          fail: () => resolve('unknown')
+        })
+      })
+      
+      if (networkType === 'none') {
+        wx.showToast({ title: '网络不可用', icon: 'none' })
+        this.setData({ loading: false })
+        return
+      }
+    } catch (e) {}
+
     try {
       const db = wx.cloud.database()
       

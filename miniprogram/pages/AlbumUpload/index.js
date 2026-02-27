@@ -1,6 +1,10 @@
 // miniprogram/pages/AlbumUpload/index.js
 const app = getApp()
 
+// 允许的图片类型
+const ALLOWED_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'webp']
+const MAX_SIZE = 10 * 1024 * 1024 // 10MB
+
 Page({
   data: {
     selectedImages: [],
@@ -11,6 +15,19 @@ Page({
   },
 
   onLoad() {},
+
+  validateImage(file) {
+    // 检查文件类型
+    const ext = file.path.split('.').pop().toLowerCase()
+    if (!ALLOWED_TYPES.includes(ext)) {
+      return { valid: false, error: `不支持 ${ext} 格式，请上传 jpg/png/gif/webp` }
+    }
+    // 检查文件大小
+    if (file.size > MAX_SIZE) {
+      return { valid: false, error: '图片大小不能超过 10MB' }
+    }
+    return { valid: true }
+  },
 
   chooseImage() {
     const { selectedImages, maxImages } = this.data
@@ -29,13 +46,23 @@ Page({
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        const newImages = res.tempFiles.map(item => ({
-          path: item.tempFilePath,
-          size: item.size
-        }))
-        this.setData({
-          selectedImages: [...selectedImages, ...newImages]
-        })
+        const newImages = []
+        for (const item of res.tempFiles) {
+          const validation = this.validateImage(item)
+          if (!validation.valid) {
+            wx.showToast({ title: validation.error, icon: 'none' })
+            continue
+          }
+          newImages.push({
+            path: item.tempFilePath,
+            size: item.size
+          })
+        }
+        if (newImages.length > 0) {
+          this.setData({
+            selectedImages: [...selectedImages, ...newImages]
+          })
+        }
       }
     })
   },
@@ -57,6 +84,22 @@ Page({
     if (selectedImages.length === 0) {
       wx.showToast({
         title: '请选择照片',
+        icon: 'none'
+      })
+      return
+    }
+
+    // 网络状态检测
+    const networkType = await new Promise(resolve => {
+      wx.getNetworkType({
+        success: res => resolve(res.networkType),
+        fail: () => resolve('unknown')
+      })
+    })
+    
+    if (networkType === 'none') {
+      wx.showToast({
+        title: '网络不可用，请检查网络',
         icon: 'none'
       })
       return

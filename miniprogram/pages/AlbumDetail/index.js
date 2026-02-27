@@ -206,13 +206,7 @@ Page({
 
   async deletePhoto() {
     const { album, isUploader } = this.data
-    if (!isUploader) {
-      wx.showToast({
-        title: '只能删除自己的照片',
-        icon: 'none'
-      })
-      return
-    }
+    if (!album) return
 
     wx.showModal({
       title: '确认删除',
@@ -221,37 +215,21 @@ Page({
         if (res.confirm) {
           wx.showLoading({ title: '删除中...' })
           try {
-            const db = wx.cloud.database()
-            
-            // 删除云存储图片
-            if (album.imageUrl && album.imageUrl.startsWith('cloud://')) {
-              await wx.cloud.deleteFile({
-                fileList: [album.imageUrl]
-              })
-            }
-            if (album.thumbUrl && album.thumbUrl.startsWith('cloud://')) {
-              await wx.cloud.deleteFile({
-                fileList: [album.thumbUrl]
-              })
-            }
-
-            // 删除数据库记录
-            await db.collection('AlbumList').doc(album._id).remove()
-
-            wx.showToast({
-              title: '已删除',
-              icon: 'success'
+            // 调用云函数安全删除
+            const result = await wx.cloud.callFunction({
+              name: 'deleteAlbumPhoto',
+              data: { albumId: album._id }
             })
 
-            setTimeout(() => {
-              wx.navigateBack()
-            }, 1500)
+            if (result.result.success) {
+              wx.showToast({ title: '已删除', icon: 'success' })
+              setTimeout(() => { wx.navigateBack() }, 1500)
+            } else {
+              wx.showToast({ title: result.result.error || '删除失败', icon: 'none' })
+            }
           } catch (err) {
             console.error('删除失败:', err)
-            wx.showToast({
-              title: '删除失败',
-              icon: 'none'
-            })
+            wx.showToast({ title: '删除失败', icon: 'none' })
           } finally {
             wx.hideLoading()
           }
