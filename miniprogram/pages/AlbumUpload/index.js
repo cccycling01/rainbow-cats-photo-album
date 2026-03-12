@@ -107,7 +107,6 @@ Page({
 
     this.setData({ uploading: true, uploadProgress: 0 })
 
-    const db = wx.cloud.database()
     const openid = app.globalData._openidA || app.globalData._openidB
     const userName = openid === app.globalData._openidA ? app.globalData.userA : app.globalData.userB
     const userId = openid === app.globalData._openidA ? 'A' : 'B'
@@ -129,22 +128,21 @@ Page({
         // 生成缩略图（使用云函数的图片处理，这里简化处理）
         // 实际项目中可以使用云函数生成缩略图
 
-        // 保存到数据库
-        await db.collection('AlbumList').add({
+        // 保存到数据库（经云函数写入）
+        const createRes = await wx.cloud.callFunction({
+          name: 'createAlbumPhoto',
           data: {
-            _openid: openid,
-            uploader: userName,
-            uploaderId: userId,
             imageUrl: uploadResult.fileID,
-            thumbUrl: uploadResult.fileID, // 简化：使用同一张图
-            content: i === 0 ? content : '', // 只在第一张添加描述
-            likes: [],
-            likeCount: 0,
-            commentCount: 0,
-            isCover: false,
-            createTime: db.serverDate()
+            thumbUrl: uploadResult.fileID,
+            content: i === 0 ? content : '',
+            uploader: userName,
+            uploaderId: userId
           }
         })
+
+        if (!createRes.result || !createRes.result.success) {
+          throw new Error(createRes.result?.error || '上传失败')
+        }
 
         successCount++
         this.setData({

@@ -1,7 +1,7 @@
 <!--miniprogram/pages/Album/index.wxml-->
 <view class="album-container">
   <!-- 封面区域 -->
-  <view class="cover-section" bindtap="goToDetail" data-id="{{coverImage ? albumList[0]._id : ''}}" wx:if="{{coverImage}}">
+  <view class="cover-section" bindtap="goToDetail" data-id="{{coverId}}" wx:if="{{coverImage}}">
     <image class="cover-image" src="{{coverImage}}" mode="aspectFill"></image>
     <view class="cover-overlay">
       <text class="cover-title">我们的相册</text>

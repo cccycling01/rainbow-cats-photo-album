@@ -5,6 +5,7 @@ Page({
   data: {
     albumList: [],
     coverImage: '',
+    coverId: '',
     loading: true,
     uploading: false,
     page: 1,
@@ -50,7 +51,8 @@ Page({
       if (refresh) {
         this.setData({
           albumList: newList,
-          coverImage: result.result.cover?.imageUrl || ''
+          coverImage: result.result.cover?.imageUrl || '',
+          coverId: result.result.cover?._id || ''
         })
       } else {
         this.setData({

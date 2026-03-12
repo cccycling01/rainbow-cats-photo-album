@@ -6,11 +6,14 @@ Page({
     album: null,
     comments: [],
     loading: true,
+    loadError: false,
     currentUserOpenid: '',
     isUploader: false,
     showCommentInput: false,
     commentText: '',
-    liked: false
+    liked: false,
+    likeLoading: false,
+    imageError: false
   },
 
   onLoad(options) {
@@ -21,7 +24,7 @@ Page({
   },
 
   async loadAlbumDetail(id) {
-    this.setData({ loading: true })
+    this.setData({ loading: true, loadError: false, imageError: false })
 
     try {
       // 获取云数据库
@@ -46,53 +49,64 @@ Page({
         currentUserOpenid: openid,
         isUploader: album._openid === openid,
         liked: album.likes && album.likes.includes(openid),
-        loading: false
+        loading: false,
+        loadError: false
       })
     } catch (err) {
       console.error('加载详情失败:', err)
       wx.showToast({
-        title: '加载失败',
+        title: '加载失败，可重试',
         icon: 'none'
       })
-      this.setData({ loading: false })
+      this.setData({ loading: false, loadError: true })
+    }
+  },
+
+  retryLoad() {
+    const { album } = this.data
+    if (album && album._id) {
+      this.loadAlbumDetail(album._id)
+      return
+    }
+    const pages = getCurrentPages()
+    const current = pages[pages.length - 1]
+    const id = current?.options?.id
+    if (id) {
+      this.loadAlbumDetail(id)
     }
   },
 
   async toggleLike() {
-    const { album, liked } = this.data
-    if (!album) return
+    const { album, liked, likeLoading } = this.data
+    if (!album || likeLoading) return
 
     const openid = app.globalData._openidA || app.globalData._openidB
-    const db = wx.cloud.database()
 
+    this.setData({ likeLoading: true })
     wx.showLoading({ title: '...' })
 
     try {
-      if (liked) {
-        // 取消点赞
-        const newLikes = album.likes.filter(id => id !== openid)
-        await db.collection('AlbumList').doc(album._id).update({
-          data: {
-            likes: newLikes,
-            likeCount: db.command.inc(-1)
-          }
-        })
+      const res = await wx.cloud.callFunction({
+        name: 'toggleAlbumLike',
+        data: { albumId: album._id }
+      })
+
+      if (res.result && res.result.success) {
+        const nextLiked = !!res.result.liked
+        const nextCount = typeof res.result.likeCount === 'number' ? res.result.likeCount : (album.likeCount || 0)
+        const nextLikes = nextLiked
+          ? [...(album.likes || []), openid]
+          : (album.likes || []).filter(id => id !== openid)
+
         this.setData({
-          liked: false,
-          'album.likeCount': album.likeCount - 1
+          liked: nextLiked,
+          'album.likeCount': nextCount,
+          'album.likes': nextLikes
         })
       } else {
-        // 点赞
-        const newLikes = [...(album.likes || []), openid]
-        await db.collection('AlbumList').doc(album._id).update({
-          data: {
-            likes: newLikes,
-            likeCount: db.command.inc(1)
-          }
-        })
-        this.setData({
-          liked: true,
-          'album.likeCount': album.likeCount + 1
+        wx.showToast({
+          title: res.result?.error || '操作失败',
+          icon: 'none'
         })
       }
     } catch (err) {
@@ -103,6 +117,7 @@ Page({
       })
     } finally {
       wx.hideLoading()
+      this.setData({ likeLoading: false })
     }
   },
 
@@ -120,37 +135,46 @@ Page({
 
   async submitComment() {
     const { commentText, album } = this.data
-    if (!commentText.trim()) return
+    const trimmed = (commentText || '').trim()
+    if (!trimmed) {
+      wx.showToast({ title: '评论不能为空', icon: 'none' })
+      return
+    }
+    if (trimmed.length > 200) {
+      wx.showToast({ title: '评论不能超过200字', icon: 'none' })
+      return
+    }
 
     wx.showLoading({ title: '发送中...' })
 
     try {
-      const db = wx.cloud.database()
       const openid = app.globalData._openidA || app.globalData._openidB
       const userName = openid === app.globalData._openidA ? app.globalData.userA : app.globalData.userB
+      const commenterId = openid === app.globalData._openidA ? 'A' : 'B'
 
-      await db.collection('AlbumComments').add({
+      const result = await wx.cloud.callFunction({
+        name: 'addAlbumComment',
         data: {
           albumId: album._id,
-          _openid: openid,
+          content: trimmed,
           commenter: userName,
-          commenterId: openid === app.globalData._openidA ? 'A' : 'B',
-          content: commentText.trim(),
-          createTime: db.serverDate()
+          commenterId
         }
       })
 
-      // 更新评论数
-      await db.collection('AlbumList').doc(album._id).update({
-        data: { commentCount: db.command.inc(1) }
-      })
+      if (!result.result || !result.result.success) {
+        wx.showToast({
+          title: result.result?.error || '评论失败',
+          icon: 'none'
+        })
+        return
+      }
 
       wx.showToast({
         title: '评论成功',
         icon: 'success'
       })
 
-      // 刷新评论
       this.loadAlbumDetail(album._id)
       this.hideCommentBox()
     } catch (err) {
@@ -171,19 +195,18 @@ Page({
     wx.showLoading({ title: '设置中...' })
 
     try {
-      const db = wx.cloud.database()
-      
-      // 先清除之前的封面
-      await db.collection('AlbumList').where({
-        isCover: true
-      }).update({
-        data: { isCover: false }
+      const result = await wx.cloud.callFunction({
+        name: 'setAlbumCover',
+        data: { albumId: album._id }
       })
 
-      // 设置新的封面
-      await db.collection('AlbumList').doc(album._id).update({
-        data: { isCover: true }
-      })
+      if (!result.result || !result.result.success) {
+        wx.showToast({
+          title: result.result?.error || '设置失败',
+          icon: 'none'
+        })
+        return
+      }
 
       wx.showToast({
         title: '已设为封面',
@@ -236,6 +259,19 @@ Page({
         }
       }
     })
+  },
+
+  previewImage() {
+    const { album } = this.data
+    if (!album) return
+    wx.previewImage({
+      current: album.imageUrl,
+      urls: [album.imageUrl]
+    })
+  },
+
+  onImageError() {
+    this.setData({ imageError: true })
   },
 
   onShareAppMessage() {
